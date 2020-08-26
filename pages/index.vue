@@ -25,26 +25,29 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from 'vue'
 export default Vue.extend({
   methods: {
     downloadFile() {
-      const openRequest = window.indexedDB.open('cache', 1);
+      const openRequest = window.indexedDB.open('cache', 1)
       openRequest.onsuccess = (ev: Event) => {
-        const db = ((ev.target as IDBOpenDBRequest).result as IDBDatabase);
-        const tx = db.transaction('filecache', 'readwrite').objectStore('filecache').index('id');
+        const db = (ev.target as IDBOpenDBRequest).result as IDBDatabase
+        const tx = db
+          .transaction('filecache', 'readwrite')
+          .objectStore('filecache')
+          .index('id')
 
-        tx.get(1).onsuccess = (ev:Event) => {
-          const cache = <any>(ev.target as IDBOpenDBRequest).result;
+        tx.get(1).onsuccess = (ev: Event) => {
+          const cache = <any>(ev.target as IDBOpenDBRequest).result
           if (cache) {
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(cache.contents);
-            link.setAttribute("download", cache.fileName);
-            link.click();
+            const link = document.createElement('a')
+            link.href = URL.createObjectURL(cache.contents)
+            link.setAttribute('download', cache.fileName)
+            link.click()
           }
         }
       }
     }
   }
-});
+})
 </script>
